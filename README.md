@@ -1,2 +1,1 @@
-- Билд: npm run build
-- dev режим: npn run dev
+Запуск: npm run dev
