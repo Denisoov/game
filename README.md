@@ -1,1 +1,1 @@
-Запуск: npm run dev
+Запуск dev режима: `npm run dev`

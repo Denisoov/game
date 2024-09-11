@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
-import { preload, create, update  } from './src/gameScene'
+import LoadingScene from './scenes/load'
+import GameScene from './scenes/game'
 
 const config = {
   type: Phaser.AUTO,
@@ -9,14 +10,10 @@ const config = {
     default: 'arcade',
     arcade: {
       gravity: { y: 0 },
-      debug: false,
-    },
+      debug: false
+    }
   },
-  scene: {
-    preload,
-    create,
-    update,
-  },
-};
+  scene: [LoadingScene, GameScene]
+}
 
-const game = new Phaser.Game(config);
+const game = new Phaser.Game(config)
