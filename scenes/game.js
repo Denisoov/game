@@ -3,9 +3,13 @@ import { createCharter } from '../src/game/create/createCharter'
 import { debugGraphics } from '../src/game/create/createDebug'
 import { getRandomInt } from '../src/game/utils'
 
+import EnergyManager from '../src/game/energy'
+
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' })
+
+    this.energyManager
   }
 
   onPointerDown(pointer) {
@@ -13,13 +17,18 @@ export default class GameScene extends Phaser.Scene {
   }
 
   collectCoin(player, coin) {
-    // ЧЕТ НЕ РАБОТАЕТ
+    //Если нет энергии
+    if (!this.energyManager.energy) return
+
     if (coin === this.selectedCoin) {
+      //TODO: ЧЕТ НЕ РАБОТАЕТ анимация, возможно перебивает update
       this.player.anims.play('take', true);
       this.time.delayedCall(500, () => coin.destroy())
       this.score += 1
       this.scoreText.setText(`Монеты: ${this.score}`)
       this.selectedCoin = null
+
+      this.energyManager.consumeEnergy(1);
     }
   }
 
@@ -90,7 +99,6 @@ export default class GameScene extends Phaser.Scene {
 
       // Обработчик ухода курсора
       coin.on('pointerout', () => document.body.classList.remove('pointer-cursor'))
-
     })
 
     // Коллизии между монетами и платформами
@@ -110,7 +118,7 @@ export default class GameScene extends Phaser.Scene {
         fill: '#fff',
         align: 'right'
       }
-    ).setOrigin(1, 0) // Устанавливаем точку привязки в правый верхний угол
+    ).setOrigin(0, 0) // Устанавливаем точку привязки в правый верхний угол
 
     this.physics.add.overlap(this.player, this.coins, this.collectCoin, null, this)
 
@@ -120,6 +128,9 @@ export default class GameScene extends Phaser.Scene {
 
     this.targetX = null
     this.playerSpeed = 160
+
+    this.energyManager = new EnergyManager(this);
+    this.energyManager.create();
 
     debugGraphics(this)
   }
@@ -153,6 +164,13 @@ export default class GameScene extends Phaser.Scene {
       if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key !== 'idle') {
         this.player.anims.play('idle', true)
       }
+    }
+  }
+
+  destroy() {
+    super.destroy()
+    if (this.energyManager) {
+      this.energyManager.destroy()
     }
   }
 }
