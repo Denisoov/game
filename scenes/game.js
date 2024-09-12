@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
 import { createCharter } from '../src/game/create/createCharter'
 import { debugGraphics } from '../src/game/create/createDebug'
-import { getRandomInt } from '../src/game/utils'
 
 import EnergyManager from '../src/game/energy'
 import ScoreManager from "../src/managers/score";
+import Coin from "../src/components/coin.js";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -29,7 +29,7 @@ export default class GameScene extends Phaser.Scene {
 
       this.selectedCoin = null
 
-      this.scoreManager.increase(1)
+      this.scoreManager.increase(coin.score)
       this.energyManager.consumeEnergy(1);
     }
   }
@@ -62,7 +62,6 @@ export default class GameScene extends Phaser.Scene {
     const numCoins = 15
     const minX = 50 // Минимальная координата X
     const maxX = this.sys.game.config.width - minX // Максимальная координата X (ширина игрового поля минус ширина монеты)
-    const yPositionPlayer = this.player.y // Y-координата для всех монет
 
     // Массив для хранения координат X
     const xPositionsCoins = [];
@@ -76,25 +75,14 @@ export default class GameScene extends Phaser.Scene {
     }
 
     this.coins = this.physics.add.group() // Создание монет на случайных позициях по оси X
-    this.coinMap = new Map() // Карта для хранения ссылок на монеты и их ID
 
-    xPositionsCoins.forEach((xPosition, index) => {
-      const image = getRandomInt(0,1) ? 'sup' : 'sushi'
-      const position = image === 'sup' ? 35 : 30
-      const coin = this.physics.add.sprite(xPosition, yPositionPlayer + position, image)
-
-      coin.setScale(0.4)
+    xPositionsCoins.forEach((x) => {
+      const coin = new Coin(this, x, this.player.y)
 
       // Добавляем монету в группу
       this.coins.add(coin)
 
-      // Устанавливаем идентификатор монеты
-      this.coinMap.set(coin, index)
-
       // Обработчик клика на монету
-      coin.body.setCircle(coin.width / 2)
-      coin.setInteractive()
-
       coin.on('pointerdown', () => this.selectedCoin = coin)
 
       coin.on('pointerover', () => document.body.classList.add('pointer-cursor'))
@@ -105,8 +93,6 @@ export default class GameScene extends Phaser.Scene {
 
     // Коллизии между монетами и платформами
     this.physics.add.collider(this.coins, platforms)
-
-    this.scoreManager = new ScoreManager(this)
 
     // Инициализация переменной для хранения выбранной монеты
     this.selectedCoin = null
@@ -120,6 +106,7 @@ export default class GameScene extends Phaser.Scene {
     this.targetX = null
     this.playerSpeed = 160
 
+    this.scoreManager = new ScoreManager(this)
     this.energyManager = new EnergyManager(this);
     this.energyManager.create();
 

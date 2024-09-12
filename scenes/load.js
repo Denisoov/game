@@ -8,11 +8,11 @@ export default class LoadingScene extends Phaser.Scene {
   MARGIN_BETWEEN = 25
 
   DEFAULT_STYLE = {
-    fontSize: '32px', 
-    fontFamily: 'Arial', 
+    fontSize: '32px',
+    fontFamily: 'Arial',
     fontStyle: 'bold',
     fill: '#ff5044',
-    stroke: '#000', 
+    stroke: '#000',
   }
 
   preload() {
@@ -23,16 +23,19 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('logotype', './assets/logo.svg')
 
     // Загрузка игровых ресурсов
+    this.load.image('sushi', './assets/pickup/sushi.png')
+    this.load.image('soup', './assets/pickup/soup.png')
+    this.load.image('burger', './assets/pickup/burger.png')
+    this.load.image('pizza', './assets/pickup/pizza.png')
+
     this.load.image('background', './assets/background.webp')
-    this.load.image('sushi', './assets/sushi.png')
-    this.load.image('sup', './assets/sup.png')
     this.load.spritesheet('character', 'https://labs.phaser.io/assets/animations/brawler48x48.png', { frameWidth: 48, frameHeight: 48 })
 
     // Создаем текст для отображения прогресса
     this.progressText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, '0%', { ...this.DEFAULT_STYLE })
     this.progressText.setOrigin(0.5, 0.5)
 
-    this.playButton = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + this.MARGIN_BETWEEN, 'Играть', { 
+    this.playButton = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + this.MARGIN_BETWEEN, 'Играть', {
       ...this.DEFAULT_STYLE
     }).setOrigin(0.5, 0.5).setInteractive().setVisible(false)
   }
