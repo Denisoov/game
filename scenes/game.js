@@ -4,12 +4,14 @@ import { debugGraphics } from '../src/game/create/createDebug'
 import { getRandomInt } from '../src/game/utils'
 
 import EnergyManager from '../src/game/energy'
+import ScoreManager from "../src/managers/score";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super({ key: 'GameScene' })
 
-    this.energyManager
+    this.energyManager = null
+    this.scoreManager = null
   }
 
   onPointerDown(pointer) {
@@ -24,10 +26,10 @@ export default class GameScene extends Phaser.Scene {
       //TODO: ЧЕТ НЕ РАБОТАЕТ анимация, возможно перебивает update
       this.player.anims.play('take', true);
       this.time.delayedCall(500, () => coin.destroy())
-      this.score += 1
-      this.scoreText.setText(`Монеты: ${this.score}`)
+
       this.selectedCoin = null
 
+      this.scoreManager.increase(1)
       this.energyManager.consumeEnergy(1);
     }
   }
@@ -92,7 +94,7 @@ export default class GameScene extends Phaser.Scene {
       // Обработчик клика на монету
       coin.body.setCircle(coin.width / 2)
       coin.setInteractive()
-      
+
       coin.on('pointerdown', () => this.selectedCoin = coin)
 
       coin.on('pointerover', () => document.body.classList.add('pointer-cursor'))
@@ -104,22 +106,10 @@ export default class GameScene extends Phaser.Scene {
     // Коллизии между монетами и платформами
     this.physics.add.collider(this.coins, platforms)
 
+    this.scoreManager = new ScoreManager(this)
+
     // Инициализация переменной для хранения выбранной монеты
     this.selectedCoin = null
-
-    // Создание табло для подсчета монет
-    this.score = 0
-    console.log(this.cameras.main.width - 10)
-    this.scoreText = this.add.text(
-      this.cameras.main.width - 200, // X-координата (200 пикселей от правого края)
-      10, // Y-координата (10 пикселей от верхнего края)
-      'Монеты: 0', // Текст по умолчанию
-      {
-        fontSize: '32px',
-        fill: '#fff',
-        align: 'right'
-      }
-    ).setOrigin(0, 0) // Устанавливаем точку привязки в правый верхний угол
 
     this.physics.add.overlap(this.player, this.coins, this.collectCoin, null, this)
 
@@ -149,18 +139,18 @@ export default class GameScene extends Phaser.Scene {
       } else {
         const direction = Math.sign(this.targetX - this.player.x)
         this.player.setVelocityX(this.playerSpeed * direction)
-  
+
         // Запускаем анимацию движения, если персонаж движется
         if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key !== 'walk') {
           this.player.anims.play('walk', true)
         }
-  
+
         // Разворачиваем спрайт в зависимости от направления
         this.player.flipX = direction > 0
       }
     } else {
       this.player.setVelocityX(0)
-  
+
       // Запускаем анимацию стояния, если персонаж не движется
       if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key !== 'idle') {
         this.player.anims.play('idle', true)
