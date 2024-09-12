@@ -7,7 +7,7 @@ export default class EnergyManager {
     this.energyBar
     this.energyText
     this.energyRegenEvent
-    this.delay = 60000
+    this.delay = 2000
   }
 
   create() {

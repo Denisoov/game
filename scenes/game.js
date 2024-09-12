@@ -109,8 +109,9 @@ export default class GameScene extends Phaser.Scene {
 
     // Создание табло для подсчета монет
     this.score = 0
+    console.log(this.cameras.main.width - 10)
     this.scoreText = this.add.text(
-      this.cameras.main.width - 10, // X-координата (10 пикселей от правого края)
+      this.cameras.main.width - 200, // X-координата (200 пикселей от правого края)
       10, // Y-координата (10 пикселей от верхнего края)
       'Монеты: 0', // Текст по умолчанию
       {
