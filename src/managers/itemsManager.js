@@ -40,12 +40,16 @@ export default class ItemsManager  {
   createItem(xPosition, yPosition, itemType) {
     const item = this.scene.physics.add.sprite(xPosition, yPosition, itemType);
 
-    item.setScale(0.3);
+    item.setScale(0.45);
     item.setInteractive();
 
-    item.body.setCircle(item.width / 2);
+    item.body.setSize(item.width, item.height);
+    item.body.setOffset(0, 0);
 
-    item.on('pointerdown', () => { self.selectedItem = item })
+    item.on('pointerdown', () => { 
+      self.selectedItem = item
+      this.scene.onPointerDown(item)
+    })
 
     item.on('pointerover', () => document.body.classList.add('pointer-cursor'))
     item.on('pointerout', () => document.body.classList.remove('pointer-cursor'))

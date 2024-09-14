@@ -16,9 +16,13 @@ export default class GameScene extends Phaser.Scene {
     this.energyManager = new EnergyManager(this)
     this.itemsManager = new ItemsManager(this, this.energyManager, this.scoreManager)
 
+    // Точка клика по X
     this.targetX = null
+
+    // Скорость передвижения
     this.playerSpeed = 250
 
+    // Кол-во генерации монет
     this.countItems = 15 // Количество монет
   }
 
@@ -30,25 +34,29 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.platformManager.createPlatforms()
-    this.platformManager.createBackgroundMusic()
+    // Создаем платформу передвижения
+    this.platformManager.createPlatform()
 
+    // Создаем задний фон
+    this.platformManager.createBackground()
+
+    // Создаем фоновую музыку
+    // this.platformManager.createBackgroundMusic()
+
+    // Создаем персонажа
     createCharter(this)
 
     this.energyManager.create()
 
     this.scoreManager.create()
 
+    // Генерируем предметы
     const { items } = this.itemsManager.generateItems(this.countItems, this.player.y)
 
-    this.physics.add.collider(items, this.platformManager.platforms)
-    this.physics.add.collider(this.player, this.platformManager.platforms)
-
+    // Добавляем проверку пересечения персонажа со списком предметов
     this.physics.add.overlap(this.player, items, this.itemsManager.collectItem, null, this)
 
-    this.input.on('pointerdown', this.onPointerDown, this)
-
-    debugGraphics(this)
+    // debugGraphics(this)
   }
 
   update() {

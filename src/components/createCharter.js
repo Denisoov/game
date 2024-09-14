@@ -1,11 +1,10 @@
 export function createCharter(context) {
     // Настройка персонажа
     context.player = context.physics.add.sprite(150, 520, 'character')
-    context.player.setBounce(0.2)
     context.player.setCollideWorldBounds(true)
     context.player.setScale(2)
     context.player.setDepth(1)
-    context.player.setSize(30, 48)
+    context.player.setSize(18, 48)
 
     // Создание анимации "идл"
     context.anims.create({
