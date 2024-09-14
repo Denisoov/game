@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
-import LoadingScene from './scenes/load'
-import GameScene from './scenes/game'
+import LoadingScene from './src/scenes/load'
+import GameScene from './src/scenes/game'
 
 const config = {
   type: Phaser.AUTO,

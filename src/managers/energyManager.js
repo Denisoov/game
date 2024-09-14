@@ -1,13 +1,13 @@
 export default class EnergyManager {
   constructor(scene) {
     this.scene = scene
-    this.energy = 3
+    this.energy = 14
     this.maxEnergy = 25
     this.energyRegenRate = 1
     this.energyBar
     this.energyText
     this.energyRegenEvent
-    this.delay = 2000
+    this.delay = 15000
   }
 
   create() {

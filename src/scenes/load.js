@@ -22,11 +22,20 @@ export default class LoadingScene extends Phaser.Scene {
 
     this.load.image('logotype', './assets/logo.svg')
 
-    // Загрузка игровых ресурсов
+    //Игровых ресурсов
     this.load.image('background', './assets/background.webp')
-    this.load.image('sushi', './assets/sushi.png')
-    this.load.image('sup', './assets/sup.png')
     this.load.spritesheet('character', 'https://labs.phaser.io/assets/animations/brawler48x48.png', { frameWidth: 48, frameHeight: 48 })
+
+    // Категория японские блюда
+    this.load.image('fish', './assets/japan/fish.png')
+    this.load.image('sauce', './assets/japan/sauce.png')
+    this.load.image('sushi-caviar', './assets/japan/sushi-caviar.png')
+    this.load.image('tea', './assets/japan/tea.png')
+    this.load.image('sushi', './assets/japan/sushi.png')
+    this.load.image('sup', './assets/japan/sup.png')
+
+    // Аудио
+    this.load.audio('background-melody', './music/background-melody.mp3')
 
     // Создаем текст для отображения прогресса
     this.progressText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, '0%', { ...this.DEFAULT_STYLE })
