@@ -34,6 +34,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.platformManager.createBottomPanel()
+    this.platformManager.createPanel()
     // Создаем платформу передвижения
     this.platformManager.createPlatform()
 

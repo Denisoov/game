@@ -1,6 +1,9 @@
 export function createCharter(context) {
+    // Рассчитываем позицию для персонажа
+    const xPositionPlayer = context.platformManager.xPositionPlatform - context.platformManager.platform.height / 4
+
     // Настройка персонажа
-    context.player = context.physics.add.sprite(150, 520, 'character')
+    context.player = context.physics.add.sprite(150, xPositionPlayer, 'character')
     context.player.setCollideWorldBounds(true)
     context.player.setScale(2)
     context.player.setDepth(1)

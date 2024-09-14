@@ -23,8 +23,11 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('logotype', './assets/logo.svg')
 
     //Игровых ресурсов
-    this.load.image('background', './assets/background.png')
+    this.load.image('bottom-panel', './assets/bottom-panel.png')
+    this.load.image('panel', './assets/panel-control.png')
     this.load.image('floor', './assets/floor.png')
+    this.load.image('background', './assets/background.png')
+
     this.load.spritesheet('character', 'https://labs.phaser.io/assets/animations/brawler48x48.png', { frameWidth: 48, frameHeight: 48 })
 
     // Категория японские блюда
@@ -33,7 +36,7 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('sushi-caviar', './assets/japan/sushi-caviar.png')
     this.load.image('tea', './assets/japan/tea.png')
     this.load.image('sushi', './assets/japan/sushi.png')
-    this.load.image('sup', './assets/japan/sup-2.png')
+    this.load.image('sup', './assets/japan/sup.png')
 
     // Аудио
     this.load.audio('background-melody', './music/background-melody.mp3')
