@@ -5,19 +5,19 @@ export default class ScoreManager {
     this.score = 0
     this.scoreText = null
   }
+  DEFAULT_STYLE = {
+    fontSize: '24px',
+    fill: '#fff',
+    align: 'right',
+    fontFamily: 'Arial',
+  }
 
   create() {
-    this.scoreText = this.scene.add.text(
-      this.scene.cameras.main.width - 150,
-      10,
-      'Монеты: 0',
-      {
-        fontSize: '24px',
-        fill: '#fff',
-        align: 'right',
-        fontFamily: 'Arial',
-      }
-    ).setOrigin(0, 0)
+    const xPosition = this.scene.cameras.main.width - 150
+    
+    this.scoreText = this.scene.add.text(xPosition, 10, 'Монеты: 0', this.DEFAULT_STYLE)
+
+    this.scoreText.setOrigin(0, 0)
   }
 
   updateScore(score) {

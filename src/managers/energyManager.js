@@ -1,26 +1,27 @@
 export default class EnergyManager {
   constructor(scene) {
     this.scene = scene
-    this.energy = 14
-    this.maxEnergy = 25
-    this.energyRegenRate = 1
+
     this.energyBar
     this.energyText
     this.energyRegenEvent
+
+    this.energy = 14
+    this.maxEnergy = 25
+    this.energyRegenRate = 1
     this.delay = 15000
   }
 
+  DEFAULT_STYLE = {
+    fontSize: '14px',
+    fill: '#fff',
+    fontFamily: 'Arial', 
+  }
+
   create() {
-    this.energyText = this.scene.add.text(
-      50,
-      12,
-      `${this.energy}↯`,
-      {
-        fontSize: '14px',
-        fill: '#fff',
-        fontFamily: 'Arial', 
-      }
-    ).setOrigin(0, 0).setDepth(1)
+    this.energyText = this.scene.add.text(50, 12, `${this.energy}↯`, this.DEFAULT_STYLE)
+
+    this.energyText.setOrigin(0, 0).setDepth(1)
 
     this.energyBarBorder = this.scene.add.graphics()
     this.energyBarBorder.lineStyle(4, 0xffffff, 1)
@@ -51,6 +52,7 @@ export default class EnergyManager {
 
   updateEnergyBar() {
     const energyPercentage = this.energy / this.maxEnergy
+
     this.energyBar.clear()
     this.energyBar.fillStyle(0xffffff, 0.5);
     this.energyBar.fillRect(10, 10, 100 * energyPercentage, 20)
