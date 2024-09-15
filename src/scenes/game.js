@@ -43,7 +43,7 @@ export default class GameScene extends Phaser.Scene {
     this.platformManager.createBackground()
 
     // Создаем фоновую музыку
-    // this.platformManager.createBackgroundMusic()
+    this.platformManager.createBackgroundMusic()
 
     // Создаем персонажа
     createCharter(this)
@@ -77,8 +77,8 @@ export default class GameScene extends Phaser.Scene {
         this.player.setVelocityX(this.playerSpeed * direction)
   
         // Запускаем анимацию движения, если персонаж движется
-        if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key !== 'walk') {
-          this.player.anims.play('walk', true)
+        if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key !== 'run') {
+          this.player.anims.play('run', true)
         }
   
         // Разворачиваем спрайт в зависимости от направления

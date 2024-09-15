@@ -45,12 +45,9 @@ export default class PlatformManager {
 
     this.platform.setInteractive().setScale(1).setScrollFactor(0)
 
-    // Загружаем звук клика
-    this.scene.sound.add('click-to-floor')
-
     this.platform.on('pointerdown', (platform) => {
-      const sound = this.scene.sound.add('click-to-floor')
-      
+      const sound = this.scene.sound.add('click-to-platform', { volume: 0.2 })
+
       sound.play()
 
       sound.once('complete', () => sound.destroy())
