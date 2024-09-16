@@ -35,7 +35,7 @@ export function createCharter(context) {
     context.anims.create({
       key: 'run',
       frames: frames('run', 9),
-      frameRate: 10,
+      frameRate: 20,
       repeat: -1 // Зацикливаем анимацию
     })
   
