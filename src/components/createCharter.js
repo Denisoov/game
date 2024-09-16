@@ -1,6 +1,6 @@
 export function createCharter(context) {
     // Рассчитываем позицию для персонажа
-    const xPositionPlayer = context.platformManager.xPositionPlatform - context.platformManager.platform.height / 4 - 44
+    const xPositionPlayer = context.platformManager.xPositionPlatform 
 
     // Настройка персонажа
     context.player = context.physics.add.sprite(150, xPositionPlayer, 'idle0')

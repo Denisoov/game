@@ -28,7 +28,7 @@ export default class ItemsManager  {
       //TODO: ЧЕТ НЕ РАБОТАЕТ анимация, возможно перебивает update
       this.scene.scene.player.anims.play('take', true)
       
-      const sound = this.scene.scene.sound.add('collect-item', { volume: 0.2 })
+      const sound = this.scene.scene.sound.add('collect-item', { volume: 0.35 })
 
       this.scene.scene.time.delayedCall(300, () => {
         sound.play()

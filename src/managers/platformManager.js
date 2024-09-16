@@ -1,7 +1,7 @@
 export default class PlatformManager {
   constructor(scene) {
     this.scene = scene
-    this.volume = 0.04
+    this.volume = 0.1
 
     this.bottomPanel
     this.panel 
@@ -15,38 +15,39 @@ export default class PlatformManager {
 
   createBottomPanel() {
     // Добавление фона
-    // this.xPositionBottomPanel = this.scene.sys.game.config.height 
-
     this.bottomPanel = this.scene.add.image(0, 0, 'bottom-panel')
 
-    this.xPositionBottomPanel = this.scene.sys.canvas.height - this.bottomPanel.height / 2
+    this.xPositionBottomPanel = this.scene.sys.canvas.height - (this.bottomPanel.height / 2)
 
+    this.bottomPanel.x = this.scene.sys.game.config.width / 2
     this.bottomPanel.y = this.xPositionBottomPanel
 
-    this.bottomPanel.setInteractive().setScale(2, 1).setScrollFactor(0).setDepth(1)
+    this.bottomPanel.setInteractive().setScale(1, 1).setScrollFactor(0).setDepth(1)
   }
 
   createPanel() {
     this.panel = this.scene.add.image(0, 0, 'panel')
 
-    this.xPositionPanel = this.xPositionBottomPanel - this.panel.height / 2
+    this.xPositionPanel = this.xPositionBottomPanel - this.panel.height - (this.panel.height / 2)
 
+    this.panel.x = this.scene.sys.game.config.width / 2
     this.panel.y = this.xPositionPanel
 
-    this.panel.setInteractive().setScale(2, 0.7).setScrollFactor(0).setDepth(2)
+    this.panel.setInteractive().setScale(1, 1).setScrollFactor(0).setDepth(1)
   }
 
   createPlatform() {
-    this.xPositionPlatform = this.xPositionPanel - (this.panel.height / 2)
+    this.platform = this.scene.add.image(0, 0, 'floor')
 
-    this.platform = this.scene.add.image(this.scene.sys.game.config.width / 2, this.xPositionPlatform, 'floor')
+    this.xPositionPlatform = this.xPositionPanel - this.platform.height - (this.platform.height / 2)
 
-    this.xPositionPlatform = this.xPositionPanel - (this.panel.height / 2)
+    this.platform.y = 420
+    this.platform.x = this.scene.sys.game.config.width / 2
 
-    this.platform.setInteractive().setScale(1).setScrollFactor(0)
+    this.platform.setInteractive().setScale(1)
 
     this.platform.on('pointerdown', (platform) => {
-      const sound = this.scene.sound.add('click-to-platform', { volume: 0.2 })
+      const sound = this.scene.sound.add('click-to-platform', { volume: 0.4 })
 
       sound.play()
 
@@ -69,7 +70,6 @@ export default class PlatformManager {
 
     // Используем большее значение масштаба, чтобы фон заполнил экран
     const scale = Math.max(scaleX, scaleY)
-
 
     // Устанавливаем масштаб и отменяем прокрутку
     background.setScale(scale).setScrollFactor(0)
