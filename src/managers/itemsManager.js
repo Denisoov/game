@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 export default class ItemsManager  {
   constructor(scene, energyManager, scoreManager) {
     // Контекст текущего менеджера
+    //TODO убрать self
     this.self = this
     // Контекст сцены, хз почему именно наименование такое должно быть
     this.scene = scene
@@ -14,7 +15,7 @@ export default class ItemsManager  {
 
     this.items
     this.itemsMap = new Map()
-    
+
   }
 
   // Метод поднятия предмета
@@ -27,7 +28,7 @@ export default class ItemsManager  {
 
       //TODO: ЧЕТ НЕ РАБОТАЕТ анимация, возможно перебивает update
       this.scene.scene.player.anims.play('take', true)
-      
+
       const sound = this.scene.scene.sound.add('collect-item', { volume: 0.35 })
 
       this.scene.scene.time.delayedCall(300, () => {
@@ -45,7 +46,7 @@ export default class ItemsManager  {
 
   // Создание предмета
   createItem(xPosition, yPosition, itemType) {
-    // TODO: Настроить правильное определение позиции Y относительно персонажа 
+    // TODO: Настроить правильное определение позиции Y относительно персонажа
     const item = this.scene.physics.add.sprite(xPosition, yPosition + 44, itemType);
 
     item.setScale(0.45);
@@ -54,7 +55,7 @@ export default class ItemsManager  {
     item.body.setSize(item.width, item.height);
     item.body.setOffset(0, 0);
 
-    item.on('pointerdown', () => { 
+    item.on('pointerdown', () => {
       self.selectedItem = item
       this.scene.onPointerDown(item)
     })
