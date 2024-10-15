@@ -8,11 +8,11 @@ export default class LoadingScene extends Phaser.Scene {
   MARGIN_BETWEEN = 25
 
   DEFAULT_STYLE = {
-    fontSize: '32px', 
-    fontFamily: 'Arial', 
+    fontSize: '32px',
+    fontFamily: 'Arial',
     fontStyle: 'bold',
     fill: '#ff5044',
-    stroke: '#000', 
+    stroke: '#000',
   }
 
   preload() {
@@ -46,6 +46,18 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('run8', './assets/charter/run/1_winter_Run_008.png')
     this.load.image('run9', './assets/charter/run/1_winter_Run_009.png')
 
+    // ПЕРСОНАЖ jump
+    this.load.image('jump0', './assets/charter/jump/1_winter_Jump_000.png')
+    this.load.image('jump1', './assets/charter/jump/1_winter_Jump_001.png')
+    this.load.image('jump2', './assets/charter/jump/1_winter_Jump_002.png')
+    this.load.image('jump3', './assets/charter/jump/1_winter_Jump_003.png')
+    this.load.image('jump4', './assets/charter/jump/1_winter_Jump_004.png')
+    this.load.image('jump5', './assets/charter/jump/1_winter_Jump_005.png')
+    this.load.image('jump6', './assets/charter/jump/1_winter_Jump_006.png')
+    this.load.image('jump7', './assets/charter/jump/1_winter_Jump_007.png')
+    this.load.image('jump8', './assets/charter/jump/1_winter_Jump_008.png')
+    this.load.image('jump9', './assets/charter/jump/1_winter_Jump_009.png')
+
 
 
     //Игровых ресурсов
@@ -74,7 +86,12 @@ export default class LoadingScene extends Phaser.Scene {
     this.progressText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, '0%', { ...this.DEFAULT_STYLE })
     this.progressText.setOrigin(0.5, 0.5)
 
-    this.playButton = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + this.MARGIN_BETWEEN, 'Играть', { 
+    this.playButton = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + this.MARGIN_BETWEEN, 'Играть', {
+      ...this.DEFAULT_STYLE
+    }).setOrigin(0.5, 0.5).setInteractive().setVisible(false)
+
+    // TODO: remove later
+    this.runnerGameButton = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + 100 + this.MARGIN_BETWEEN, 'Runner Game', {
       ...this.DEFAULT_STYLE
     }).setOrigin(0.5, 0.5).setInteractive().setVisible(false)
   }
@@ -106,6 +123,14 @@ export default class LoadingScene extends Phaser.Scene {
         ease: 'Power2' // Тип интерполяции
     })
 
+    // TODO: remove later
+    this.tweens.add({
+      targets: this.runnerGameButton,
+      alpha: 1,
+      duration: 1000, // Длительность анимации в миллисекундах
+      ease: 'Power2' // Тип интерполяции
+    })
+
     // Анимация мигания кнопки
     this.tweens.add({
         targets: this.playButton,
@@ -120,6 +145,10 @@ export default class LoadingScene extends Phaser.Scene {
     this.playButton.on('pointerdown', () => this.scene.start('GameScene'))
 
     this.playButton.setVisible(true)
+
+    // TODO: remove later
+    this.runnerGameButton.on('pointerdown', () => this.scene.start('RunnerGameScene'))
+    this.runnerGameButton.setVisible(true)
 
 }
 
