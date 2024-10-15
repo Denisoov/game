@@ -2,11 +2,14 @@
 const gameOptions = {
 	platformStartSpeed: 350,
 	spawnRange: [100, 350],
-	platformSizeRange: [50, 250],
+	platformSizeRange: [100, 300],
 	playerGravity: 900,
 	jumpForce: 400,
 	playerStartPosition: 200,
-	jumps: 2
+	jumps: 2,
+	backgroundSpeed: 1,
+	cloudSpeed: 1.2,
+	cloudSpeed2: 1.4
 }
 
 export default class RunnerGameScene extends Phaser.Scene{
@@ -15,6 +18,17 @@ export default class RunnerGameScene extends Phaser.Scene{
 	}
 
 	create(){
+
+		// Add the background
+		this.assetsBackground = this.add.tileSprite(0, 0, this.sys.game.config.width, this.sys.game.config.height, 'background');
+		this.assetsClouds = this.add.tileSprite(0, 0, this.sys.game.config.width, 180, 'runner/clouds');
+		this.assetsClouds2 = this.add.tileSprite(0, 20, this.sys.game.config.width, 180, 'runner/clouds2');
+
+		this.assetsBackground.setOrigin(0, 0); // Set the origin to the top-left corner
+		this.assetsClouds.setOrigin(0, 0); // Set the origin to the top-left corner
+		this.assetsClouds2.setOrigin(0, 0); // Set the origin to the top-left corner
+
+
 
 		// group with all active platforms.
 		this.platformGroup = this.add.group({
@@ -42,7 +56,7 @@ export default class RunnerGameScene extends Phaser.Scene{
 
 		// adding the player;
 		this.player = this.physics.add.sprite(gameOptions.playerStartPosition, this.sys.game.config.height / 2, "run0");
-		this.player.setScale(0.10, 0.10)
+		this.player.setScale(0.15, 0.15)
 		this.player.setGravityY(gameOptions.playerGravity);
 
 		this.player.flipX = true
@@ -51,13 +65,6 @@ export default class RunnerGameScene extends Phaser.Scene{
 		this.anims.create({
 			key: 'run',
 			frames: frames('run', 9),
-			frameRate: 20,
-			repeat: -1 // Зацикливаем анимацию
-		})
-
-		this.anims.create({
-			key: 'jump',
-			frames: frames('jump', 9),
 			frameRate: 20,
 			repeat: -1 // Зацикливаем анимацию
 		})
@@ -80,7 +87,9 @@ export default class RunnerGameScene extends Phaser.Scene{
 			this.platformPool.remove(platform);
 		}
 		else{
-			platform = this.physics.add.sprite(posX, this.game.config.height * 0.8, "bottom-panel");
+			platform = this.physics.add.sprite(posX, this.game.config.height * 0.95, "runner/stone");
+
+
 			platform.setImmovable(true);
 			platform.setVelocityX(gameOptions.platformStartSpeed * -1);
 			this.platformGroup.add(platform);
@@ -98,11 +107,14 @@ export default class RunnerGameScene extends Phaser.Scene{
 			this.player.setVelocityY(gameOptions.jumpForce * -1);
 			this.playerJumps ++;
 
-
-			this.player.anims.play('jump', true)
+			this.player.anims.stop()
 		}
 	}
 	update(){
+		// Move the background
+		this.assetsBackground.tilePositionX += gameOptions.backgroundSpeed;
+		this.assetsClouds.tilePositionX += gameOptions.cloudSpeed;
+		this.assetsClouds2.tilePositionX += gameOptions.cloudSpeed2;
 
 		// game over
 		if(this.player.y > this.game.config.height){
@@ -110,7 +122,10 @@ export default class RunnerGameScene extends Phaser.Scene{
 		}
 		this.player.x = gameOptions.playerStartPosition;
 
-		this.player.anims.play('run', true)
+		if (this.player.body.touching.down) {
+			this.player.anims.play('run', true)
+		}
+
 
 		// recycling platforms
 		let minDistance = this.sys.game.config.width
