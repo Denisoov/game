@@ -1,0 +1,27 @@
+.app-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 12px;
+    transition: opacity 0.2s ease-in, visibility 0.2s ease-in;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.app-dialog--visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.app-dialog__title {
+    font-size: 28px;
+    line-height: 40px;
+    margin: 0 0 24px;
+}

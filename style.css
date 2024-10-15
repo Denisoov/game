@@ -1,4 +1,6 @@
-body { 
+@import "src/styles/dialog.css";
+
+body {
   margin: auto 0;
   display: flex;
   justify-content: center;
