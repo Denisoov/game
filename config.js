@@ -5,8 +5,8 @@ import RunnerGameScene from './src/scenes/games/runner.js'
 
 const config = {
   type: Phaser.AUTO,
-  width: 1200,
-  height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
   physics: {
     default: 'arcade',
     arcade: {

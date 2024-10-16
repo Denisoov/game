@@ -1,34 +1,47 @@
 // global game options
 const gameOptions = {
-	platformStartSpeed: 350,
+	platformStartSpeed: 250,
 	spawnRange: [100, 350],
 	platformSizeRange: [100, 300],
 	playerGravity: 900,
 	jumpForce: 400,
-	playerStartPosition: 200,
+	playerStartPosition: 50,
 	jumps: 2,
-	backgroundSpeed: 1,
+	backgroundSpeed: 0,
 	cloudSpeed: 1.2,
-	cloudSpeed2: 1.4
+	cloudSpeed2: 1.5
 }
 
 export default class RunnerGameScene extends Phaser.Scene{
 	constructor(){
 		super({ key: 'RunnerGameScene' })
+		this.score = 0;
+	}
+
+	preload() {
+		this.load.image('runner/stone', './assets/games/runner/stone.png')
+		this.load.image('runner/clouds', './assets/games/runner/clouds.png')
+		this.load.image('runner/clouds2', './assets/games/runner/clouds2.png')
+		this.load.image('runner/background', './assets/games/runner/background.jpg')
 	}
 
 	create(){
-
-		// Add the background
-		this.assetsBackground = this.add.tileSprite(0, 0, this.sys.game.config.width, this.sys.game.config.height, 'background');
+		this.assetsBackground = this.add.tileSprite(0, 0, 0, 0, 'runner/background');
 		this.assetsClouds = this.add.tileSprite(0, 0, this.sys.game.config.width, 180, 'runner/clouds');
 		this.assetsClouds2 = this.add.tileSprite(0, 20, this.sys.game.config.width, 180, 'runner/clouds2');
 
-		this.assetsBackground.setOrigin(0, 0); // Set the origin to the top-left corner
-		this.assetsClouds.setOrigin(0, 0); // Set the origin to the top-left corner
-		this.assetsClouds2.setOrigin(0, 0); // Set the origin to the top-left corner
+		this.assetsBackground.setOrigin(0, 0);
+		this.assetsClouds.setOrigin(0, 0);
+		this.assetsClouds2.setOrigin(0, 0);
 
-
+		this.scoreText = this.add.text(56, 16, '0', {
+			fontSize: '32px',
+			fontFamily: 'Arial',
+			fontStyle: 'bold',
+			fill: '#ff5044',
+			stroke: '#000',
+		});
+		this.add.sprite(32, 32, 'sushi').setOrigin(0.5, 0.5).setDisplaySize(32, 32); // Установите размер монеты
 
 		// group with all active platforms.
 		this.platformGroup = this.add.group({
@@ -56,7 +69,7 @@ export default class RunnerGameScene extends Phaser.Scene{
 
 		// adding the player;
 		this.player = this.physics.add.sprite(gameOptions.playerStartPosition, this.sys.game.config.height / 2, "run0");
-		this.player.setScale(0.15, 0.15)
+		this.player.setScale(0.10, 0.10)
 		this.player.setGravityY(gameOptions.playerGravity);
 
 		this.player.flipX = true
@@ -74,6 +87,19 @@ export default class RunnerGameScene extends Phaser.Scene{
 
 		// checking for input
 		this.input.on("pointerdown", this.jump, this);
+
+		this.time.addEvent({
+			delay: 3000,
+			callback: this.addScore,
+			callbackScope: this,
+			loop: true
+		});
+	}
+
+	// Метод для добавления очков
+	addScore() {
+		this.score += 1;
+		this.scoreText.setText(this.score);
 	}
 
 	// the core of the script: platform are added from the pool or created on the fly
@@ -88,7 +114,6 @@ export default class RunnerGameScene extends Phaser.Scene{
 		}
 		else{
 			platform = this.physics.add.sprite(posX, this.game.config.height * 0.95, "runner/stone");
-
 
 			platform.setImmovable(true);
 			platform.setVelocityX(gameOptions.platformStartSpeed * -1);
@@ -118,6 +143,8 @@ export default class RunnerGameScene extends Phaser.Scene{
 
 		// game over
 		if(this.player.y > this.game.config.height){
+			this.score = 0;
+			this.scoreText.setText(this.score);
 			this.scene.start("LoadingScene");
 		}
 		this.player.x = gameOptions.playerStartPosition;

@@ -58,18 +58,11 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('jump8', './assets/charter/jump/1_winter_Jump_008.png')
     this.load.image('jump9', './assets/charter/jump/1_winter_Jump_009.png')
 
-
-
     //Игровых ресурсов
     this.load.image('bottom-panel', './assets/bottom-panel.png')
     this.load.image('panel', './assets/panel-control.png')
     this.load.image('floor', './assets/floor.png')
     this.load.image('background', './assets/background.png')
-
-    // Runner game
-    this.load.image('runner/stone', './assets/games/runner/stone.png')
-    this.load.image('runner/clouds', './assets/games/runner/clouds.png')
-    this.load.image('runner/clouds2', './assets/games/runner/clouds2.png')
 
     // Тестовый персонаж
     this.load.spritesheet('character', 'https://labs.phaser.io/assets/animations/brawler48x48.png', { frameWidth: 48, frameHeight: 48 })
