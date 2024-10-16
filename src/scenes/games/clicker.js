@@ -3,21 +3,22 @@ export default class ClickerGameScene extends Phaser.Scene {
 		super({ key: 'ClickerGameScene' });
 		this.score = 0;
 		this.coins = null;
+		this.timeLeft = 30;
+		this.timerText = null;
 	}
 
 	preload() {
-		// Загрузка изображения монеты
 		this.load.image('clicker/coin', './assets/japan/sushi.png')
 	}
 
 	create() {
-		// Создание текста для отображения счёта
 		this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' });
+		this.timerText = this.add.text(this.sys.game.config.width - 150, 16, 'Time: 30', { fontSize: '32px', fill: '#fff' });
+
 
 		// Создание группы монет
 		this.coins = this.physics.add.group();
 
-		// Таймер для создания монет каждые 2 секунды
 		this.time.addEvent({
 			delay: 500,
 			callback: this.createCoin,
@@ -25,25 +26,65 @@ export default class ClickerGameScene extends Phaser.Scene {
 			loop: true
 		});
 
-		// Обработка кликов на монеты
+		this.time.addEvent({
+			delay: 150,
+			callback: this.removeCoin,
+			callbackScope: this,
+			loop: true
+		});
+
+		this.time.addEvent({
+			delay: 1000,
+			callback: this.updateTimer,
+			callbackScope: this,
+			loop: true
+		});
+
 		this.input.on('pointerdown', this.handleClick, this);
 	}
 
-	update() {
-		// Удаление монет, которые покинули экран
-		this.coins.children.iterate((coin) => {
-			if (coin.y > this.sys.game.config.height) {
-				coin.destroy();
-			}
+	createCoin() {
+		const x = Phaser.Math.Between(0, this.sys.game.config.width);
+		const y = Phaser.Math.Between(0, this.sys.game.config.height);
+		const coin = this.coins.create(x, y, 'clicker/coin');
+
+		coin.setAlpha(0);
+
+		this.tweens.add({
+			targets: coin,
+			alpha: 1,
+			duration: 300,
+			ease: 'Power2',
 		});
 	}
 
-	createCoin() {
-		// Создание новой монеты в случайной позиции по оси X
-		const x = Phaser.Math.Between(0, this.sys.game.config.width);
-		const coin = this.coins.create(x, 0, 'clicker/coin');
-		coin.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-		coin.setVelocityY(Phaser.Math.Between(300, 400));
+	removeCoin() {
+		if (this.coins.getLength() <= 5) return
+
+		const coin = this.coins.getFirstAlive();
+
+		if (!coin) return;
+
+		this.tweens.add({
+			targets: coin,
+			alpha: 0,
+			duration: 300,
+			ease: 'Power2',
+			onComplete: () => coin.destroy()
+		});
+	}
+
+	updateTimer() {
+		this.timeLeft -= 1;
+		this.timerText.setText('Time: ' + this.timeLeft);
+
+		if (this.timeLeft <= 0) this.endGame()
+	}
+
+	endGame() {
+		this.scene.pause();
+		this.add.text(this.sys.game.config.width / 2 - 100, this.sys.game.config.height / 2, 'Game Over', { fontSize: '36px', fill: '#fff' });
+		this.add.text(this.sys.game.config.width / 2 - 100, this.sys.game.config.height / 2 + 70, 'Final Score: ' + this.score, { fontSize: '28px', fill: '#fff' });
 	}
 
 	handleClick(pointer) {
@@ -55,7 +96,6 @@ export default class ClickerGameScene extends Phaser.Scene {
 	}
 
 	collectCoin(coin) {
-		// Увеличение счёта и удаление монеты
 		coin.destroy();
 		this.score += 1;
 		this.scoreText.setText('Score: ' + this.score);
