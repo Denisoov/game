@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import LoadingScene from './src/scenes/load'
 import GameScene from './src/scenes/game'
 import RunnerGameScene from './src/scenes/games/runner.js'
+import ClickerGameScene from './src/scenes/games/clicker.js'
 
 const config = {
   type: Phaser.AUTO,
@@ -14,7 +15,7 @@ const config = {
       debug: false
     }
   },
-  scene: [LoadingScene, GameScene, RunnerGameScene]
+  scene: [LoadingScene, GameScene, RunnerGameScene, ClickerGameScene]
 }
 
 const game = new Phaser.Game(config)

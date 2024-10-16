@@ -92,6 +92,11 @@ export default class LoadingScene extends Phaser.Scene {
     this.runnerGameButton = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + 100 + this.MARGIN_BETWEEN, 'Runner Game', {
       ...this.DEFAULT_STYLE
     }).setOrigin(0.5, 0.5).setInteractive().setVisible(false)
+
+    // TODO: remove later
+    this.clickerGameButton = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + 200 + this.MARGIN_BETWEEN, 'Clicker Game', {
+      ...this.DEFAULT_STYLE
+    }).setOrigin(0.5, 0.5).setInteractive().setVisible(false)
   }
 
   create() {
@@ -147,6 +152,10 @@ export default class LoadingScene extends Phaser.Scene {
     // TODO: remove later
     this.runnerGameButton.on('pointerdown', () => this.scene.start('RunnerGameScene'))
     this.runnerGameButton.setVisible(true)
+
+    // TODO: remove later
+    this.clickerGameButton.on('pointerdown', () => this.scene.start('ClickerGameScene'))
+    this.clickerGameButton.setVisible(true)
 
 }
 
