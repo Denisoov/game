@@ -1,10 +1,10 @@
 // global game options
 const gameOptions = {
 	platformStartSpeed: 250,
-	spawnRange: [100, 350],
-	platformSizeRange: [100, 300],
+	spawnRange: [175, 350], //[100, 350]
+	platformSizeRange: [75, 150], //[100, 300]
 	playerGravity: 900,
-	jumpForce: 400,
+	jumpForce: 320, //400
 	playerStartPosition: 50,
 	jumps: 2,
 	backgroundSpeed: 0,
