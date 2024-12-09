@@ -70,6 +70,17 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.audio('click-to-platform', './effects/click-to-platform.mp3')
     this.load.audio('collect-item', './effects/collect-item.mp3')
 
+    // Мини-игра
+    this.load.image('background-game', './assets/mini-games/background.png')
+    this.load.image('background-dialog', './assets/mini-games/background-dialog.png')
+    this.load.image('juk', './assets/mini-games/juk.png')
+    this.load.image('button-left', './assets/mini-games/left-button.png')
+    this.load.image('button-right', './assets/mini-games/right-button.png')
+
+    this.load.image('button-retry', './assets/mini-games/button-retry.png')
+    this.load.image('button-home', './assets/mini-games/button-home.png')
+    this.load.image('button-empty', './assets/mini-games/button-empty.png')
+
     // Создаем текст для отображения прогресса
     this.progressText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, '0%', { ...this.DEFAULT_STYLE })
     this.progressText.setOrigin(0.5, 0.5)
@@ -117,7 +128,7 @@ export default class LoadingScene extends Phaser.Scene {
     })
 
     // Переход к основной игровой сцене
-    this.playButton.on('pointerdown', () => this.scene.start('GameScene'))
+    this.playButton.on('pointerdown', () => this.scene.start('MiniGameScene'))
 
     this.playButton.setVisible(true)
 

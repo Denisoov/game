@@ -7,9 +7,9 @@ import ItemsManager from '../managers/itemsManager'
 import ScoreManager from '../managers/scoreManager'
 import PlatformManager from '../managers/platformManager'
 
-export default class GameScene extends Phaser.Scene {
+export default class MainScene extends Phaser.Scene {
   constructor() {
-    super({ key: 'GameScene' })
+    super({ key: 'MainScene' })
 
     this.platformManager = new PlatformManager(this) 
     this.scoreManager = new ScoreManager(this)

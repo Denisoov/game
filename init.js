@@ -1,11 +1,15 @@
 import Phaser from 'phaser'
 import LoadingScene from './src/scenes/load'
-import GameScene from './src/scenes/game'
+import MiniGameScene from './src/scenes/MiniGameScene.js'
+import MainScene from './src/scenes/MainScene.js'
+
+const width = window.innerWidth;
+const height = window.innerHeight;
 
 const config = {
   type: Phaser.AUTO,
-  width: 1200,
-  height: 600,
+  width: width,
+  height: height,
   physics: {
     default: 'arcade',
     arcade: {
@@ -13,7 +17,7 @@ const config = {
       debug: false
     }
   },
-  scene: [LoadingScene, GameScene]
+  scene: [LoadingScene, MainScene, MiniGameScene]
 }
 
 const InitPhaserGame = () => {
