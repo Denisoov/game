@@ -16,4 +16,11 @@ const config = {
   scene: [LoadingScene, GameScene]
 }
 
-const game = new Phaser.Game(config)
+const InitPhaserGame = () => {
+  const parent = 'game-container'
+
+  return new Phaser.Game({ ...config, parent });
+}
+
+export default InitPhaserGame;
+
