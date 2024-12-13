@@ -42,8 +42,16 @@ export default class MainScene extends Phaser.Scene {
     // Создаем задний фон
     this.platformManager.createBackground()
 
+    this.buttonGame = this.add.image(this.platformManager.bottomPanel.x - (this.platformManager.bottomPanel.x / 1.5), this.platformManager.bottomPanel.y, 'button-game')
+    this.buttonGame.setDepth(5).setScale(0.7).setInteractive()
+    this.buttonGame.on('pointerdown', () => {
+      this.scene.stop('MainScene')
+      this.scene.start('MiniGameScene')
+    })
+
+
     // Создаем фоновую музыку
-    this.platformManager.createBackgroundMusic()
+    // this.platformManager.createBackgroundMusic()
 
     // Создаем персонажа
     createCharter(this)
@@ -97,7 +105,16 @@ export default class MainScene extends Phaser.Scene {
   destroy() {
     super.destroy()
 
+    // Destroy managers
+    if (this.platformManager) this.platformManager.destroy()
+    if (this.scoreManager) this.scoreManager.destroy()
     if (this.energyManager) this.energyManager.destroy()
+    if (this.itemsManager) this.itemsManager.destroy()
+
+    // Destroy other resources if needed
+    this.physics.world.removeCollider(this.player)
+    this.player.destroy()
+    this.buttonGame.destroy()
   }
 }
 

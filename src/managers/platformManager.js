@@ -4,8 +4,9 @@ export default class PlatformManager {
     this.volume = 0.1
 
     this.bottomPanel
-    this.panel 
+    this.panel
     this.platform
+    this.background
 
     this.xPositionBottomPanel
     this.xPositionPanel
@@ -33,7 +34,7 @@ export default class PlatformManager {
     this.panel.x = this.scene.sys.game.config.width / 2
     this.panel.y = this.xPositionPanel
 
-    this.panel.setInteractive().setScale(1, 1).setScrollFactor(0).setDepth(1)
+    this.panel.setInteractive().setScale(1, 1).setScrollFactor(0).setDepth(2)
   }
 
   createPlatform() {
@@ -41,12 +42,13 @@ export default class PlatformManager {
 
     this.xPositionPlatform = this.xPositionPanel - this.platform.height - (this.platform.height / 2)
 
-    this.platform.y = 420
+    this.platform.y = this.panel.y - this.panel.height - this.panel.height / 2
     this.platform.x = this.scene.sys.game.config.width / 2
 
     this.platform.setInteractive().setScale(1)
 
     this.platform.on('pointerdown', (platform) => {
+      console.log('sound platform')
       const sound = this.scene.sound.add('click-to-platform', { volume: 0.4 })
 
       sound.play()
@@ -59,25 +61,24 @@ export default class PlatformManager {
   }
 
   createBackground() {
+    this.background = this.scene.add.image(0, 0, 'background');
 
-    const background = this.scene.add.image(0, 0, 'background')
-    // Устанавливаем начало координат в левый верхний угол
-    background.setOrigin(0, 0)
+    // Устанавливаем начало координат в центр
+    this.background.setOrigin(0.5, 0); // Центрируем по X, начинаем от верхней части по Y
 
-    // Расчет масштаба
-    const scaleX =  this.scene.sys.game.config.width / background.width
-    const scaleY = 0
+    // Устанавливаем позицию Y, чтобы фон начинался от верхней границы экрана
+    this.background.y = 0;
 
-    // Используем большее значение масштаба, чтобы фон заполнил экран
-    const scale = Math.max(scaleX, scaleY)
+    // Рассчитываем масштаб по высоте, чтобы фон заполнил всю высоту экрана
+    const scaleY = this.scene.sys.game.config.height / this.background.height;
 
-    // Устанавливаем масштаб и отменяем прокрутку
-    background.setScale(scale).setScrollFactor(0)
-  }
+    // Устанавливаем масштаб по высоте
+    this.background.setScale(scaleY);
 
-  // Добавьте платформы в группу
-  addPlatform(platform) {
-    this.scene.platforms.add(platform)
+    this.background.setScale(scaleY, scaleY); // Устанавливаем одинаковый масштаб по обеим осям
+
+    // Устанавливаем позицию X так, чтобы фон был по центру
+    this.background.x = this.scene.sys.game.config.width / 2; // Центрируем по Xм Y так, чтобы фон заполнил пространство до платформы
   }
 
   createBackgroundMusic() {
@@ -86,5 +87,29 @@ export default class PlatformManager {
 
     // Проигрываем фоновой музыки
     this.scene.sound.play('background-melody', { volume: this.volume, loop: true })
+  }
+
+  destroy() {
+    if (this.bottomPanel) {
+      this.bottomPanel.destroy();
+    }
+
+    if (this.panel) {
+      this.panel.destroy();
+    }
+
+    if (this.platform) {
+      this.platform.destroy();
+    }
+
+    if (this.background) {
+      this.background.destroy();
+    }
+
+    this.bottomPanel = null
+    this.panel = null
+    this.platform = null
+    this.background = null
+    this.volume = 0
   }
 }

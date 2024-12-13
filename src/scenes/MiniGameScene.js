@@ -49,16 +49,14 @@ export default class MiniGameScene extends Phaser.Scene {
 
   createCharter() {
     // Настройка персонажа
-    this.player = this.physics.add.sprite(150, 500, 'idle0')
+    this.playerGame = this.physics.add.sprite(150, 500, 'idle0')
       .setDepth(1)
       .setScale(0.15, 0.15)
       .setCollideWorldBounds(true)
 
-    this.player.setBodySize(this.player.width - 340, this.player.height, true)
+    this.playerGame.setBodySize(this.playerGame.width * 0.8, this.playerGame.height * 0.8, true)
 
-    console.log(this.background.y)
-
-    this.player.y = this.background.y + (this.background.height / 2) - 80
+    this.playerGame.y = this.background.y + (this.background.height / 2) - 80
 
     const frames = (name, countFrames) => {
       let frames = [];
@@ -95,8 +93,10 @@ export default class MiniGameScene extends Phaser.Scene {
       .setScale(0.2)
 
     this.controlLeftButton.on('pointerdown', () => {
-      this.isMovingLeft = true;
-      this.controlLeftButton.setAlpha(0.6);
+      console.log('left')
+      this.isMovingLeft = true
+      console.log(this.isMovingLeft)
+      this.controlLeftButton.setAlpha(0.6)
     })
 
     this.controlLeftButton.on('pointerup', () => {
@@ -121,6 +121,7 @@ export default class MiniGameScene extends Phaser.Scene {
   }
 
   create() {
+    this.createStartDialog()
     this.createBackground()
     this.score = 0 // Счетчик баллов
     this.isGameOver = false // Тагл выключенной игры
@@ -137,30 +138,14 @@ export default class MiniGameScene extends Phaser.Scene {
 
 
     // Настройка коллизий
-    this.physics.add.overlap(this.player, this.eggs, this.catchEgg, null, this)
-    this.physics.add.overlap(this.player, this.stones, this.hitStone, null, this)
+    this.physics.add.overlap(this.playerGame, this.eggs, this.catchEgg, null, this)
+    this.physics.add.overlap(this.playerGame, this.stones, this.hitStone, null, this)
 
     // Настройка коллизий
-    this.physics.add.overlap(this.player, this.eggs, this.catchEgg, null, this)
+    this.physics.add.overlap(this.playerGame, this.eggs, this.catchEgg, null, this)
 
-    // Запуск таймера для появления камней
-    this.stoneSpawnTimer = this.time.addEvent({
-      delay: 2000, // Появление камней каждые 2 секунды
-      callback: this.spawnStone,
-      callbackScope: this,
-      loop: true
-    })
+    this.debugGraphics = this.add.graphics().setAlpha(0.75); // Прозрачность 0.75
 
-    // Запуск таймера для появления яиц
-    this.eggSpawnTimer = this.time.addEvent({
-      delay: 1000,
-      callback: this.spawnEgg,
-      callbackScope: this,
-      loop: true
-    })
-
-    // Создание кнопок управления
-    this.createControlButtons()
   }
 
 
@@ -222,22 +207,9 @@ export default class MiniGameScene extends Phaser.Scene {
     // Останавливаем таймер для камней
     if (this.stoneSpawnTimer) this.stoneSpawnTimer.remove()
 
-    // Перезапуск таймеров
-    this.stoneSpawnTimer = this.time.addEvent({
-      delay: 2000, // Появление камней каждые 2 секунды
-      callback: this.spawnStone,
-      callbackScope: this,
-      loop: true
-    })
-
-    this.eggSpawnTimer = this.time.addEvent({
-      delay: 1000,
-      callback: this.spawnEgg,
-      callbackScope: this,
-      loop: true
-    })
-
     this.closeGameOverDialog()
+
+    this.generateItems()
 
     this.isGameOver = false
   }
@@ -255,12 +227,17 @@ export default class MiniGameScene extends Phaser.Scene {
     this.removeFallingItems()
     this.resetPlayerPosition()
     this.createGameOverDialog()
+
+    this.controlRightButton.setAlpha(1)
+    this.controlLeftButton.setAlpha(1)
+
+    this.isDialogGameOver = true
   }
 
   resetPlayerPosition() {
-    this.player.setPosition(150, 550)
-    this.player.setVelocity(0)
-    this.player.anims.play('idle', true)
+    this.playerGame.setPosition((this.cameras.main.width / 2), this.background.y + (this.background.height / 2) - 80)
+    this.playerGame.setVelocity(0)
+    this.playerGame.anims.play('idle', true)
   }
 
   // Удаление всех элементов диалогового окна
@@ -274,15 +251,99 @@ export default class MiniGameScene extends Phaser.Scene {
     this.isDialogGameOver = false
   }
 
+  generateItems() {
+    // Перезапуск таймеров
+    this.stoneSpawnTimer = this.time.addEvent({
+      delay: 2000, // Появление камней каждые 2 секунды
+      callback: this.spawnStone,
+      callbackScope: this,
+      loop: true
+    })
+
+    this.eggSpawnTimer = this.time.addEvent({
+      delay: 1000,
+      callback: this.spawnEgg,
+      callbackScope: this,
+      loop: true
+    })
+
+    // Создание кнопок управления
+    this.createControlButtons()
+  }
+
+  createStartDialog() {
+    // Создаем фоновую панель для диалогового окна
+    const dialogWidth = this.sys.game.config.width - 40
+    const dialogHeight = 250
+    const dialogX = (this.sys.game.config.width - dialogWidth) / 2
+    const dialogY = (this.sys.game.config.height - dialogHeight) / 2
+
+    const DEFAULT_STYLE = {
+      fontSize: '20px',
+      fontFamily: 'Arial',
+      fontStyle: 'bold',
+      fill: '#ffffff',
+      stroke: '#000',
+      resolution: 2
+    }
+
+    // Создаем полупрозрачный фон
+    this.add.rectangle(0, 0, Number(this.sys.game.config.width), Number(this.sys.game.config.height), 0x000000, 0.8)
+      .setOrigin(0)
+      .setDepth(10)
+      .setInteractive() // Делаем его интерактивным, чтобы игнорировать клики
+      .on('pointerdown', () => {}) // Игнорируем клики на потемнении
+
+    const dialogContainer = this.add.container(dialogX, dialogY).setDepth(11);
+
+    // Создаем спрайт с текстурой
+    const dialogBackground = this.add.sprite(0, 0, 'background-dialog')
+      .setOrigin(0) // Устанавливаем точку отсчета в верхний левый угол
+      .setDisplaySize(dialogWidth, dialogHeight); // Устанавливаем размеры спрайта
+
+
+    // Добавляем текст
+    const titleGame = this.add.text(dialogWidth / 2, dialogHeight / 6, 'Кулинарные Приключения', DEFAULT_STYLE)
+      .setOrigin(0.5)
+
+    // Добавляем текст
+    const description = this.add.text(dialogWidth / 2, (dialogHeight / 6) + 50, `Собери как можно больше суши, \n стараясь не собрать жуков `, {
+      fontSize: '14px',
+      fontFamily: 'Arial',
+      fontStyle: 'bold',
+      fill: '#fedabe',
+      stroke: '#000',
+      align: 'center',
+      resolution: 2
+    }).setOrigin(0.5); // Центрируем текст по горизонтали
+
+    // Кнопка "Повторить попытку"
+    const startButton = this.add.sprite(dialogWidth / 2 + 60, dialogHeight / 1.5, 'button-start')
+      .setOrigin(0.5)
+      .setScale(0.52)
+      .setInteractive()
+      .on('pointerdown', () => this.restartGame())
+
+
+    // Кнопка "Сменить сцену"
+    const changeScene = this.add.sprite(dialogWidth / 2 - 60, dialogHeight / 1.5, 'button-home')
+      .setOrigin(0.5)
+      .setScale(0.2, 0.2)
+      .setInteractive()
+      .on('pointerdown', () => {
+        this.restartGame()
+        this.scene.start('MainScene')
+      })
+
+
+    dialogContainer.add(dialogBackground)
+    dialogContainer.add(titleGame)
+    dialogContainer.add(description)
+    dialogContainer.add(changeScene)
+    dialogContainer.add(startButton)
+  }
+
   createGameOverDialog() {
-    this.controlRightButton.setAlpha(1)
-    this.controlLeftButton.setAlpha(1)
-
-    this.isDialogGameOver = true
-    this.resetPlayerPosition()
-
-
-
     // Создаем фоновую панель для диалогового окна
     const dialogWidth = this.sys.game.config.width - 40
     const dialogHeight = 250
@@ -332,7 +393,11 @@ export default class MiniGameScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setScale(0.2, 0.2)
       .setInteractive()
-      .on('pointerdown', () => this.scene.start('MainScene'))
+      .on('pointerdown', () => {
+        this.endGame()
+        this.restartGame()
+        this.scene.start('MainScene')
+      })
 
     dialogContainer.add(dialogBackground)
     dialogContainer.add(gameOverText)
@@ -346,17 +411,44 @@ export default class MiniGameScene extends Phaser.Scene {
 
     // Управление движением персонажа
     if (this.isMovingLeft) {
-      this.player.setVelocityX(-this.playerSpeed)
-      this.player.flipX = false // Поворачиваем вправо
-      this.player.anims.play('run', true)
+      this.playerGame.setVelocityX(-this.playerSpeed)
+      this.playerGame.flipX = false // Поворачиваем вправо
+      this.playerGame.anims.play('run', true)
     } else if (this.isMovingRight) {
-      this.player.setVelocityX(this.playerSpeed)
-      this.player.flipX = true // Поворачиваем влево
+      this.playerGame.setVelocityX(this.playerSpeed)
+      this.playerGame.flipX = true // Поворачиваем влево
 
-      this.player.anims.play('run', true)
+      this.playerGame.anims.play('run', true)
     } else {
-      this.player.setVelocityX(0)
-      this.player.anims.play('idle', true)
+      this.playerGame.setVelocityX(0)
+      this.playerGame.anims.play('idle', true)
     }
+  }
+
+  destroy() {
+    // Уничтожаем спрайты
+    if (this.background) this.background.destroy()
+    if (this.boxScore) this.boxScore.destroy()
+    if (this.scoreText) this.scoreText.destroy()
+    if (this.playerGame) this.playerGame.destroy()
+    if (this.controlLeftButton) this.controlLeftButton.destroy()
+    if (this.controlRightButton) this.controlRightButton.destroy()
+
+    // Уничтожаем группы спрайтов
+    if (this.eggs) this.eggs.children.clear(true, true)
+    if (this.stones) this.stones.children.clear(true, true)
+
+    // Останавливаем и удаляем таймеры
+    if (this.eggSpawnTimer) this.eggSpawnTimer.remove()
+    if (this.stoneSpawnTimer) this.stoneSpawnTimer.remove()
+
+    // Уничтожаем диалоговое окно игры
+    this.closeGameOverDialog()
+
+    // Уничтожаем остальные ресурсы, если нужно
+    this.debugGraphics.destroy()
+
+    this.scene.get('MiniGameScene').destroy()
+
   }
 }

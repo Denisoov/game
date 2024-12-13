@@ -19,17 +19,18 @@ export default class EnergyManager {
   }
 
   create() {
-    this.energyText = this.scene.add.text(50, 12, `${this.energy}↯`, this.DEFAULT_STYLE)
+    this.energyBarBorder = this.scene.add.image(70, 40, 'energy-tab').setScale(0.2).setOrigin(0.5)
 
+    this.energyText = this.scene.add.text(60, this.energyBarBorder.height * 0.2 / 1.7, `${this.energy}↯`, this.DEFAULT_STYLE)
     this.energyText.setOrigin(0, 0).setDepth(1)
 
-    this.energyBarBorder = this.scene.add.graphics()
-    this.energyBarBorder.lineStyle(4, 0xffffff, 1)
-    this.energyBarBorder.strokeRect(9, 9, 102, 22)
+    this.buttonPromo = this.scene.add.image(50,0, 'button-promo').setScale(0.2)
+    this.buttonPromo.y = this.energyBarBorder.y + 100
 
-    this.energyBar = this.scene.add.graphics()
-    this.energyBar.fillStyle(0xffffff, 1)
-    this.energyBar.fillRect(10, 10, 100, 20)
+    this.buttonBonus = this.scene.add.image(50,0, 'button-bonus').setScale(0.2)
+
+    this.buttonBonus.y = this.buttonPromo.height * 0.2 + 150
+
     this.updateEnergyBar()
 
 
@@ -51,12 +52,8 @@ export default class EnergyManager {
   }
 
   updateEnergyBar() {
-    const energyPercentage = this.energy / this.maxEnergy
 
-    this.energyBar.clear()
-    this.energyBar.fillStyle(0xffffff, 0.5);
-    this.energyBar.fillRect(10, 10, 100 * energyPercentage, 20)
-    this.energyText.text = `${this.energy}↯`
+    this.energyText.text = `${this.energy} / 50↯`
   }
 
   destroy() {
