@@ -11,6 +11,7 @@ export default class MiniGameScene extends Phaser.Scene {
   controlLeftButton
   isDialogGameOver
 
+
   createBackground() {
     // Создаем фон
     this.background = this.add.image(0, 0, 'background-game'); // Изменено на this.add.image
@@ -142,6 +143,7 @@ export default class MiniGameScene extends Phaser.Scene {
     this.physics.add.overlap(this.playerGame, this.stones, this.hitStone, null, this)
 
     // Настройка коллизий
+
     this.physics.add.overlap(this.playerGame, this.eggs, this.catchEgg, null, this)
 
     this.debugGraphics = this.add.graphics().setAlpha(0.75); // Прозрачность 0.75
@@ -278,6 +280,8 @@ export default class MiniGameScene extends Phaser.Scene {
     const dialogX = (this.sys.game.config.width - dialogWidth) / 2
     const dialogY = (this.sys.game.config.height - dialogHeight) / 2
 
+
+
     const DEFAULT_STYLE = {
       fontSize: '20px',
       fontFamily: 'Arial',
@@ -343,12 +347,24 @@ export default class MiniGameScene extends Phaser.Scene {
     dialogContainer.add(startButton)
   }
 
+  setScoreInScore() {
+    let totalScore = Number(localStorage.getItem('score'))
+
+    totalScore = totalScore + this.score
+
+
+
+    localStorage.setItem('score', String(totalScore))
+  }
+
   createGameOverDialog() {
     // Создаем фоновую панель для диалогового окна
     const dialogWidth = this.sys.game.config.width - 40
     const dialogHeight = 250
     const dialogX = (this.sys.game.config.width - dialogWidth) / 2
     const dialogY = (this.sys.game.config.height - dialogHeight) / 2
+
+    this.setScoreInScore()
 
     // Создаем полупрозрачный фон
     this.add.rectangle(0, 0, Number(this.sys.game.config.width), Number(this.sys.game.config.height), 0x000000, 0.8)

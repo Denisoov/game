@@ -6,6 +6,7 @@ import EnergyManager from '../managers/energyManager'
 import ItemsManager from '../managers/itemsManager'
 import ScoreManager from '../managers/scoreManager'
 import PlatformManager from '../managers/platformManager'
+import StorePromoManager from '../managers/storePromoManager'
 
 export default class MainScene extends Phaser.Scene {
   constructor() {
@@ -16,6 +17,8 @@ export default class MainScene extends Phaser.Scene {
     this.energyManager = new EnergyManager(this)
     this.itemsManager = new ItemsManager(this, this.energyManager, this.scoreManager)
 
+    this.storePromoManager = new StorePromoManager(this)
+
     // Точка клика по X
     this.targetX = null
 
@@ -23,7 +26,7 @@ export default class MainScene extends Phaser.Scene {
     this.playerSpeed = 250
 
     // Кол-во генерации монет
-    this.countItems = 15 // Количество монет
+    this.countItems = Number(localStorage.getItem('countItems')) // Количество монет
   }
 
   onPointerDown(pointer) {
@@ -45,6 +48,10 @@ export default class MainScene extends Phaser.Scene {
     this.buttonGame = this.add.image(this.platformManager.bottomPanel.x - (this.platformManager.bottomPanel.x / 1.5), this.platformManager.bottomPanel.y, 'button-game')
     this.buttonGame.setDepth(5).setScale(0.7).setInteractive()
     this.buttonGame.on('pointerdown', () => {
+      if (this.energyManager.energy < 5) return
+
+      this.energyManager.consumeEnergy(5)
+
       this.scene.stop('MainScene')
       this.scene.start('MiniGameScene')
     })
@@ -59,6 +66,8 @@ export default class MainScene extends Phaser.Scene {
     this.energyManager.create()
 
     this.scoreManager.create()
+
+    this.storePromoManager.createButtonPromo()
 
     // Генерируем предметы
     const { items } = this.itemsManager.generateItems(this.countItems, this.player.y)
@@ -107,7 +116,6 @@ export default class MainScene extends Phaser.Scene {
 
     // Destroy managers
     if (this.platformManager) this.platformManager.destroy()
-    if (this.scoreManager) this.scoreManager.destroy()
     if (this.energyManager) this.energyManager.destroy()
     if (this.itemsManager) this.itemsManager.destroy()
 

@@ -53,8 +53,10 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('panel', './assets/panel-control.png')
     this.load.image('floor', './assets/floor-snow.png')
     this.load.image('background', './assets/background-snow.jpg')
+    this.load.image('dialog-close', './assets/dialog-close.png')
 
     this.load.image('coin-tab', './assets/coin-tab.png')
+    this.load.image('coin', './assets/coin.png')
     this.load.image('button-promo', './assets/button-promo.png')
     this.load.image('button-bonus', './assets/button-bonus.png')
     this.load.image('energy-tab', './assets/energy-tab.png')
@@ -82,6 +84,7 @@ export default class LoadingScene extends Phaser.Scene {
     // Мини-игра
     this.load.image('background-game', './assets/mini-games/background.png')
     this.load.image('background-dialog', './assets/mini-games/background-dialog.png')
+    this.load.image('background-item', './assets/mini-games/background-item.png')
     this.load.image('juk', './assets/mini-games/juk.png')
     this.load.image('button-left', './assets/mini-games/left-button.png')
     this.load.image('button-right', './assets/mini-games/right-button.png')

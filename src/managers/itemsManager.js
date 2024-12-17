@@ -38,9 +38,10 @@ export default class ItemsManager  {
 
       sound.once('complete', () => sound.destroy())
 
-      this.scoreManager.updateScore(1)
+      this.scoreManager.updateScore(5)
 
       this.energyManager.consumeEnergy(1);
+
     }
   }
 

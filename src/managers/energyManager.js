@@ -6,8 +6,8 @@ export default class EnergyManager {
     this.energyText
     this.energyRegenEvent
 
-    this.energy = 14
-    this.maxEnergy = 25
+    this.energy = 25
+    this.maxEnergy = 50
     this.energyRegenRate = 1
     this.delay = 15000
   }
@@ -18,18 +18,21 @@ export default class EnergyManager {
     fontFamily: 'Arial', 
   }
 
+  initEnergy() {
+    let energy = localStorage.getItem('energy')
+
+    if (!energy) energy = this.maxEnergy
+
+    this.energy = Number(energy)
+  }
+
   create() {
+    this.initEnergy()
+
     this.energyBarBorder = this.scene.add.image(70, 40, 'energy-tab').setScale(0.2).setOrigin(0.5)
 
     this.energyText = this.scene.add.text(60, this.energyBarBorder.height * 0.2 / 1.7, `${this.energy}↯`, this.DEFAULT_STYLE)
     this.energyText.setOrigin(0, 0).setDepth(1)
-
-    this.buttonPromo = this.scene.add.image(50,0, 'button-promo').setScale(0.2)
-    this.buttonPromo.y = this.energyBarBorder.y + 100
-
-    this.buttonBonus = this.scene.add.image(50,0, 'button-bonus').setScale(0.2)
-
-    this.buttonBonus.y = this.buttonPromo.height * 0.2 + 150
 
     this.updateEnergyBar()
 
@@ -49,6 +52,8 @@ export default class EnergyManager {
   consumeEnergy(energy) {
     this.energy = Phaser.Math.Clamp(this.energy - energy, 0, this.maxEnergy)
     this.updateEnergyBar()
+
+    localStorage.setItem('energy', this.energy)
   }
 
   updateEnergyBar() {
