@@ -1,7 +1,7 @@
 export default class PlatformManager {
   constructor(scene) {
     this.scene = scene
-    this.volume = 0.1
+    this.volume = 0.06
 
     this.bottomPanel
     this.panel
@@ -48,7 +48,6 @@ export default class PlatformManager {
     this.platform.setInteractive().setScale(1)
 
     this.platform.on('pointerdown', (platform) => {
-      console.log('sound platform')
       const sound = this.scene.sound.add('click-to-platform', { volume: 0.4 })
 
       sound.play()

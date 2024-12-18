@@ -58,7 +58,7 @@ export default class MainScene extends Phaser.Scene {
 
 
     // Создаем фоновую музыку
-    // this.platformManager.createBackgroundMusic()
+    this.platformManager.createBackgroundMusic()
 
     // Создаем персонажа
     createCharter(this)

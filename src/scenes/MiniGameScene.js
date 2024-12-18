@@ -12,6 +12,20 @@ export default class MiniGameScene extends Phaser.Scene {
   isDialogGameOver
 
 
+  preload() {
+    this.load.audio('background-mini-game', './music/background-mini-game.mp3')
+    this.load.audio('caught', './effects/caught.mp3')
+  }
+
+
+  playSoundCaught() {
+    const sound = this.sound.add('caught', { volume: 0.35 })
+
+    this.scene.scene.time.delayedCall(100, () => sound.play())
+
+    sound.once('complete', () => sound.destroy())
+  }
+
   createBackground() {
     // Создаем фон
     this.background = this.add.image(0, 0, 'background-game'); // Изменено на this.add.image
@@ -122,6 +136,8 @@ export default class MiniGameScene extends Phaser.Scene {
   }
 
   create() {
+    this.sound.add('background-mini-game')
+
     this.createStartDialog()
     this.createBackground()
     this.score = 0 // Счетчик баллов
@@ -170,6 +186,7 @@ export default class MiniGameScene extends Phaser.Scene {
   }
 
   catchEgg(wolf, egg) {
+    this.playSoundCaught()
     egg.destroy() // Удаляем яйцо
     this.score += 1 // Увеличиваем счет
     this.scoreText.setText('x' + this.score) // Обновляем текст счета
@@ -274,6 +291,7 @@ export default class MiniGameScene extends Phaser.Scene {
   }
 
   createStartDialog() {
+    this.sound.pauseAll()
     // Создаем фоновую панель для диалогового окна
     const dialogWidth = this.sys.game.config.width - 40
     const dialogHeight = 250
@@ -321,12 +339,16 @@ export default class MiniGameScene extends Phaser.Scene {
       resolution: 2
     }).setOrigin(0.5); // Центрируем текст по горизонтали
 
-    // Кнопка "Повторить попытку"
+    // Кнопка начать игру
     const startButton = this.add.sprite(dialogWidth / 2 + 60, dialogHeight / 1.5, 'button-start')
       .setOrigin(0.5)
       .setScale(0.52)
       .setInteractive()
-      .on('pointerdown', () => this.restartGame())
+      .on('pointerdown', () =>  {
+        this.restartGame()
+        this.sound.play('background-mini-game', { volume: 0.06, loop: true })
+
+      })
 
 
     // Кнопка "Сменить сцену"
@@ -337,6 +359,7 @@ export default class MiniGameScene extends Phaser.Scene {
       .on('pointerdown', () => {
         this.restartGame()
         this.scene.start('MainScene')
+        this.sound.pauseAll()
       })
 
 
@@ -358,6 +381,8 @@ export default class MiniGameScene extends Phaser.Scene {
   }
 
   createGameOverDialog() {
+    this.sound.pauseAll()
+
     // Создаем фоновую панель для диалогового окна
     const dialogWidth = this.sys.game.config.width - 40
     const dialogHeight = 250
@@ -402,7 +427,10 @@ export default class MiniGameScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setScale(0.2, 0.2)
       .setInteractive()
-      .on('pointerdown', () => this.restartGame())
+      .on('pointerdown', () =>  {
+        this.restartGame()
+        this.sound.play('background-mini-game', { volume: 0.06, loop: true })
+    })
 
     // Кнопка "Сменить сцену"
     const changeSceneButton = this.add.sprite(dialogWidth / 2 + 60, dialogHeight / 1.5, 'button-home')
@@ -413,6 +441,7 @@ export default class MiniGameScene extends Phaser.Scene {
         this.endGame()
         this.restartGame()
         this.scene.start('MainScene')
+        this.sound.pauseAll()
       })
 
     dialogContainer.add(dialogBackground)

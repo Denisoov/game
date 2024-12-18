@@ -12,7 +12,7 @@ export default class LoadingScene extends Phaser.Scene {
     fontFamily: 'Arial', 
     fontStyle: 'bold',
     fill: '#ff5044',
-    stroke: '#000', 
+    stroke: '#000',
   }
 
   preload() {
@@ -59,6 +59,7 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('coin', './assets/coin.png')
     this.load.image('button-promo', './assets/button-promo.png')
     this.load.image('button-bonus', './assets/button-bonus.png')
+    this.load.image('button-buy', './assets/mini-games/button-buy.png')
     this.load.image('energy-tab', './assets/energy-tab.png')
 
 
@@ -80,6 +81,8 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.audio('background-melody', './music/background-melody.mp3')
     this.load.audio('click-to-platform', './effects/click-to-platform.mp3')
     this.load.audio('collect-item', './effects/collect-item.mp3')
+    this.load.audio('buy', './effects/buy.mp3')
+
 
     // Мини-игра
     this.load.image('background-game', './assets/mini-games/background.png')
@@ -93,6 +96,7 @@ export default class LoadingScene extends Phaser.Scene {
     this.load.image('button-home', './assets/mini-games/button-home.png')
     this.load.image('button-empty', './assets/mini-games/button-empty.png')
     this.load.image('button-start', './assets/mini-games/button-start.png')
+    this.load.image('charter-promo', './assets/charter/gift/1_winter_Gift_004.png')
 
     // Создаем текст для отображения прогресса
     this.progressText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, '0%', { ...this.DEFAULT_STYLE })
