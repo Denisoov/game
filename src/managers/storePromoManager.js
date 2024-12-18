@@ -9,7 +9,6 @@ export default class StorePromoManager {
     this.dialogCloseIcon
     this.dialogBackground
     this.dialogContainer
-    this.cardBackground
     this.backgroundButtonBuy
     this.titleButtonBuy
   }
@@ -170,11 +169,11 @@ export default class StorePromoManager {
       const cardY = 50 + index * (cardHeight + cardSpacing); // Расчет Y позиции карточки
 
       // Создаем фон карточки
-      this.cardBackground = this.scene.add.image(dialogX + 20, cardY, 'background-item')
+      const cardBackground = this.scene.add.image(dialogX + 20, cardY, 'background-item')
         .setOrigin(0, 0).setDepth(11).setDisplaySize(dialogWidth - 80, cardHeight)
 
-      const paddingXTitle = this.cardBackground.x + 30
-      const paddingXPrice = this.cardBackground.x + 50
+      const paddingXTitle = cardBackground.x + 30
+      const paddingXPrice = cardBackground.x + 50
 
       // Добавляем текст названия
       const nameText = this.scene.add.text(paddingXTitle, cardY + 10, item.name, {
@@ -220,10 +219,10 @@ export default class StorePromoManager {
         })
       }
 
-
-
+      console.log(this.backgroundButtonBuy)
+      console.log(this.titleButtonBuy)
       // Добавляем все элементы в контейнер
-      this.dialogContainer.add([this.cardBackground, nameText, priceText, this.backgroundButtonBuy, this.titleButtonBuy, coinImage]);
+      this.dialogContainer.add([cardBackground, nameText, priceText, this.backgroundButtonBuy, this.titleButtonBuy, coinImage]);
     })
 
     this.dialogContainer.add(this.dialogBackground)
@@ -234,7 +233,6 @@ export default class StorePromoManager {
     this.shadow.destroy()
     this.dialogBackground.destroy()
     this.dialogCloseIcon.destroy()
-    this.cardBackground.destroy()
     this.backgroundButtonBuy.destroy()
 
     this.dialogContainer.destroy(); // Удаляем контейнер, который содержит все элементы диалога
@@ -244,7 +242,7 @@ export default class StorePromoManager {
     this.shadow.destroy()
     this.dialogBackground.destroy()
     this.dialogCloseIcon.destroy()
-    this.dialogContainer.destroy(); // Удаляем контейнер, который содержит все элементы диалога
+    this.dialogContainer.destroy() // Удаляем контейнер, который содержит все элементы диалога
   }
 
   create() {}
