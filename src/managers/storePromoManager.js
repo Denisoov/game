@@ -201,13 +201,16 @@ export default class StorePromoManager {
         fill: '#fff'
       });
 
+      // Добавляем все элементы в контейнер
+      this.dialogContainer.add([cardBackground, nameText, priceText, coinImage])
+
       if (this.scene.scoreManager.score >= item.price) {
         // Добавляем задний фон кнопки
         this.backgroundButtonBuy = this.scene.add.image(dialogWidth - 90, cardY + 60, 'button-buy')
           .setDepth(11).setInteractive().setScale(0.11).setOrigin(0.5).on('pointerdown', () => {
-          this.playSoundBuy()
-          this.checkBuyPromo(item)
-        })
+            this.playSoundBuy()
+            this.checkBuyPromo(item)
+          })
 
         // Создаем кнопку
         this.titleButtonBuy = this.scene.add.text(dialogX + dialogWidth - 150, cardY + 50, 'Купить', {
@@ -217,12 +220,9 @@ export default class StorePromoManager {
           padding: { y: -2 },
           align: 'center'
         })
-      }
 
-      console.log(this.backgroundButtonBuy)
-      console.log(this.titleButtonBuy)
-      // Добавляем все элементы в контейнер
-      this.dialogContainer.add([cardBackground, nameText, priceText, this.backgroundButtonBuy, this.titleButtonBuy, coinImage]);
+        this.dialogContainer.add([this.backgroundButtonBuy, this.titleButtonBuy])
+      }
     })
 
     this.dialogContainer.add(this.dialogBackground)
