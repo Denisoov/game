@@ -233,8 +233,6 @@ export default class StorePromoManager {
     this.shadow.destroy()
     this.dialogBackground.destroy()
     this.dialogCloseIcon.destroy()
-    this.backgroundButtonBuy.destroy()
-
     this.dialogContainer.destroy(); // Удаляем контейнер, который содержит все элементы диалога
   }
 
