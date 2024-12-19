@@ -6,10 +6,19 @@ import MainScene from './src/scenes/MainScene.js'
 const width = window.innerWidth;
 const height = window.innerHeight;
 
+// Функция для вычисления высоты канваса
+const calculateCanvasHeight = () => {
+  // Здесь вы можете настроить высоту, вычитая высоты верхней и нижней панелей
+  const topPanelHeight = 50; // Пример высоты верхней панели
+  const bottomPanelHeight = 50; // Пример высоты нижней панели
+
+  return height - topPanelHeight - bottomPanelHeight;
+};
+
 const config = {
   type: Phaser.AUTO,
   width: width,
-  height: height,
+  height: calculateCanvasHeight(),
   physics: {
     default: 'arcade',
     arcade: {
