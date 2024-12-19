@@ -210,7 +210,7 @@ export default class StorePromoManager {
           .setDepth(11).setInteractive().setScale(0.11).setOrigin(0.5).on('pointerdown', () => {
             this.playSoundBuy()
             this.checkBuyPromo(item)
-          })
+        })
 
         // Создаем кнопку
         this.titleButtonBuy = this.scene.add.text(dialogX + dialogWidth - 150, cardY + 50, 'Купить', {
@@ -222,6 +222,20 @@ export default class StorePromoManager {
         })
 
         this.dialogContainer.add([this.backgroundButtonBuy, this.titleButtonBuy])
+      } else {
+
+        // Создаем кнопку
+        this.titleButtonBuy = this.scene.add.text(dialogX + dialogWidth - 160, cardY + 50, 'Не хватает', {
+          fontSize: '16px',
+          fontFamily: 'Arial',
+          fill: '#ff0000',
+          align: 'center',
+          stroke: '#7e340b', // Цвет обводки
+          strokeThickness: 4
+        }).setOrigin(0)
+
+        this.dialogContainer.add([this.titleButtonBuy])
+
       }
     })
 

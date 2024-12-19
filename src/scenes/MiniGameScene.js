@@ -418,9 +418,12 @@ export default class MiniGameScene extends Phaser.Scene {
       .setOrigin(0.5)
 
     // Добавляем текст
-    const gameScoreText = this.add.text(dialogWidth / 2, (dialogHeight / 6) + 60, `${this.score}`, DEFAULT_STYLE)
-      .setOrigin(0.5); // Центрируем текст по горизонтали
+    const gameScoreText = this.add.text(dialogWidth / 2 - 15, (dialogHeight / 6) + 60, `${this.score}`, DEFAULT_STYLE)
+      .setOrigin(0.5)
 
+    const gameScoreCoins = this.add.image(0, (dialogHeight / 6) + 60, 'coin').setScale(0.3)
+
+    gameScoreCoins.x = gameScoreText.x + gameScoreCoins.width * 0.3
 
     // Кнопка "Повторить попытку"
     const retryButton = this.add.sprite(dialogWidth / 2 - 60, dialogHeight / 1.5, 'button-retry')
@@ -449,6 +452,7 @@ export default class MiniGameScene extends Phaser.Scene {
     dialogContainer.add(retryButton)
     dialogContainer.add(changeSceneButton)
     dialogContainer.add(gameScoreText)
+    dialogContainer.add(gameScoreCoins)
   }
 
   update() {
