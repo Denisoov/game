@@ -1,9 +1,9 @@
 body { 
   margin: auto 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 86vh;
 }
 
 canvas { display: block; }
