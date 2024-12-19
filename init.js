@@ -10,7 +10,7 @@ const height = window.innerHeight;
 const calculateCanvasHeight = () => {
   // Здесь вы можете настроить высоту, вычитая высоты верхней и нижней панелей
   const topPanelHeight = 20; // Пример высоты верхней панели
-  const bottomPanelHeight = 46; // Пример высоты нижней панели
+  const bottomPanelHeight = 20; // Пример высоты нижней панели
 
   return height - topPanelHeight - bottomPanelHeight;
 };
