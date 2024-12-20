@@ -48,10 +48,6 @@ export default class MainScene extends Phaser.Scene {
     this.buttonGame = this.add.image(this.platformManager.bottomPanel.x - (this.platformManager.bottomPanel.x / 1.5), this.platformManager.bottomPanel.y, 'button-game')
     this.buttonGame.setDepth(5).setScale(0.7).setInteractive()
     this.buttonGame.on('pointerdown', () => {
-      if (this.energyManager.energy < 5) return
-
-      this.energyManager.consumeEnergy(5)
-
       this.scene.stop('MainScene')
       this.scene.start('MiniGameScene')
     })
