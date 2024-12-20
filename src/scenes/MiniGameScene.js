@@ -119,6 +119,11 @@ export default class MiniGameScene extends Phaser.Scene {
       this.controlLeftButton.setAlpha(1);
     })
 
+    this.controlLeftButton.on('pointerout', () => {
+      this.isMovingLeft = false // Сброс флага при выходе указателя за пределы кнопки
+      this.controlRightButton.setAlpha(1)
+    })
+
     // Кнопка вправо
     this.controlRightButton = this.add.sprite(positionX + 100, this.cameras.main.height - 100, 'button-right')
       .setInteractive()
@@ -131,6 +136,11 @@ export default class MiniGameScene extends Phaser.Scene {
 
     this.controlRightButton.on('pointerup', () => {
       this.isMovingRight = false
+      this.controlRightButton.setAlpha(1)
+    })
+
+    this.controlRightButton.on('pointerout', () => {
+      this.isMovingRight = false // Сброс флага при выходе указателя за пределы кнопки
       this.controlRightButton.setAlpha(1)
     })
   }
