@@ -1,0 +1,30 @@
+  createPlatform() {
+    this.platform = this.scene.add.image(0, 0, 'floor')
+
+    this.xPositionPlatform = this.xPositionPanel - this.platform.height - (this.platform.height / 2)
+
+    this.platform.y = 420
+    this.platform.x = this.scene.sys.game.config.width / 2
+
+    this.platform.setInteractive().setScale(1)
+
+    this.platform.on('pointerdown', (platform) => {
+      const sound = this.scene.sound.add('click-to-platform', { volume: 0.4 })
+
+      sound.play()
+
+      sound.once('complete', () => sound.destroy())
+
+      this.scene.onPointerDown(platform)
+
+    }, this.scene)
+  }
+
+
+смешанные чувства: 
+
+возможно на фоне саковича
+
+теоретик + малоопытный
+
+имитация работы -> нет ответственности ( когда она назначила релиз рассылок )

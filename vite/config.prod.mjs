@@ -19,14 +19,14 @@ const phasermsg = () => {
 }
 
 export default defineConfig({
-  base: './',
+  base: '/game/', // Укажите имя вашего репозитория
   plugins: [
     vue(),
     phasermsg()
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('../src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)) // Изменили с ../src на ./src
     }
   },
   logLevel: 'warning',
@@ -38,5 +38,9 @@ export default defineConfig({
         }
       }
     },
+    assetsInlineLimit: 0 // Отключаем инлайнинг ассетов
+  },
+  server: {
+    host: true // Для корректной работы в dev-режиме
   }
 })
